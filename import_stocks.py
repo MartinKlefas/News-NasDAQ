@@ -1,10 +1,11 @@
 import pandas as pd
 import os
+from tqdm import tqdm
 
 def do_folder(folderName: str):
     bigStockMerge = pd.DataFrame()
-    for dirname, _, filenames in os.walk('/kaggle/input/nasdaq-daily-stock-prices/'):
-        for filename in filenames:
+    for dirname, _, filenames in os.walk(folderName):
+        for filename in tqdm(filenames):
             
             thisFile = os.path.join(dirname, filename)
             bigStockMerge = import_one(thisFile, bigStockMerge)
@@ -23,6 +24,6 @@ def import_one(fileName : str, targetFrame : pd.DataFrame):
     
     trimmed_stock = stock_data[[c for c in stock_data.columns if c in {"date",ticker}]]
     if targetFrame.size > 0:
-        return targetFrame.merge(trimmed_stock,how="outer", on="date")
+        return targetFrame.merge(trimmed_stock,how="outer", on="date").copy()
     else:
         return trimmed_stock
