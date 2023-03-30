@@ -15,7 +15,7 @@ def do_folder(folderName: str):
     bigStockMerge["Average"] = bigStockMerge.mean(axis=1)
     bigStockMerge.index = pd.to_datetime(bigStockMerge.index)
     bigStockMerge = bigStockMerge[[c for c in bigStockMerge.columns if c in {"date","Average"}]]
-    feather.write_feather(bigStockMerge,"kaggle/input/stock.feather")
+    feather.write_feather(bigStockMerge,"kaggle/input/stocks.feather")
     return bigStockMerge
 
 
@@ -46,7 +46,10 @@ def getModifiedDate(folderName: str):
     maxDate = None
     for dirname, _, filenames in os.walk(folderName):
         for filename in tqdm(filenames):
-           if os.path.getmtime(filename) > maxDate:
-               maxDate = os.path.getmtime(filename)
+            thisFile = os.path.join(dirname, filename)
+            if not maxDate or  os.path.getmtime(thisFile) > maxDate:
+                    maxDate = os.path.getmtime(thisFile)
+            
+        
 
     return maxDate
