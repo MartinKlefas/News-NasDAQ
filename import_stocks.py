@@ -27,3 +27,17 @@ def import_one(fileName : str, targetFrame : pd.DataFrame):
         return targetFrame.merge(trimmed_stock,how="outer", on="date").copy()
     else:
         return trimmed_stock
+    
+
+def testInputs(folderName: str):
+
+    for dirname, _, filenames in os.walk(folderName):
+        for filename in tqdm(filenames):
+            thisFile = os.path.join(dirname, filename)
+            try:
+                temp = import_one(thisFile,pd.DataFrame())
+            except Exception as ex:
+                print(f"\n\nProblem with {thisFile}, {ex}")
+
+    
+
