@@ -1,5 +1,7 @@
 import pandas as pd
 
+import pyarrow.feather as feather
+
 import string
 from nltk.corpus import stopwords
 
@@ -28,6 +30,6 @@ def get_headlines(fileName : str):
     news["headline_text"] = news.headline_text.apply(text_process)
     news = news.groupby("publish_date")["headline_text"].agg(' '.join).to_frame()
     news.index.names = ["date"]
-
+    feather.write_feather(news,"kaggle/input/news.feather")
     return news
 

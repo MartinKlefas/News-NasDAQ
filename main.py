@@ -1,5 +1,10 @@
 import pandas as pd
 import numpy as np
+import os
+
+import pyarrow.feather as feather
+
+import gc
 
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
@@ -11,11 +16,24 @@ from sklearn.metrics import mean_absolute_error
 import import_headlines, import_stocks
 
 print("Importing News")
-news = import_headlines.get_headlines("kaggle/input/million-headlines/abcnews-date-text.csv")
+if os.path.getmtime("kaggle/input/million-headlines/abcnews-date-text.csv") > os.path.getmtime("kaggle/input/news.feather"):
+    news = import_headlines.get_headlines("kaggle/input/million-headlines/abcnews-date-text.csv")
+else:
+    news = feather.read_feather("kaggle/input/news.feather")
 
 print("Importing Stocks")
-stockdata = import_stocks.do_folder("kaggle/input/nasdaq-daily-stock-prices/")
-final_data = news.merge(stockdata,how="inner",on="date")
+if import_stocks.getModifiedDate("kaggle/input/nasdaq-daily-stock-prices/") > os.path.getmtime("kaggle/input/stocks.feather"):
+    stockdata = import_stocks.do_folder("kaggle/input/nasdaq-daily-stock-prices/")
+else:
+    stockdata = feather.read_feather("kaggle/input/stocks.feather")
+
+
+final_data = news.merge(stockdata,how="inner",on="date").copy()
+
+del news
+del stockdata
+gc.collect()
+
 final_data = final_data[[c for c in final_data.columns if c in {"date","headline_text","Mean"}]]
 
 print("Vectorizing")

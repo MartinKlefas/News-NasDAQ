@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 from tqdm import tqdm
+import pyarrow.feather as feather
 
 def do_folder(folderName: str):
     bigStockMerge = pd.DataFrame()
@@ -14,12 +15,13 @@ def do_folder(folderName: str):
     bigStockMerge["Average"] = bigStockMerge.mean(axis=1)
     bigStockMerge.index = pd.to_datetime(bigStockMerge.index)
     bigStockMerge = bigStockMerge[[c for c in bigStockMerge.columns if c in {"date","Average"}]]
+    feather.write_feather(bigStockMerge,"kaggle/input/stock.feather")
     return bigStockMerge
 
 
 def import_one(fileName : str, targetFrame : pd.DataFrame):
     stock_data = pd.read_csv(fileName,index_col='date')
-    ticker = stock_data["ticker"][0]
+    ticker = stock_data["ticker"].astype("str")[0]
     stock_data[ticker] = (stock_data["close"] - stock_data["open"])/stock_data["open"]
     
     trimmed_stock = stock_data[[c for c in stock_data.columns if c in {"date",ticker}]]
@@ -40,4 +42,11 @@ def testInputs(folderName: str):
                 print(f"\n\nProblem with {thisFile}, {ex}")
 
     
+def getModifiedDate(folderName: str):
+    maxDate = None
+    for dirname, _, filenames in os.walk(folderName):
+        for filename in tqdm(filenames):
+           if os.path.getmtime(filename) > maxDate:
+               maxDate = os.path.getmtime(filename)
 
+    return maxDate
