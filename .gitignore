@@ -130,3 +130,6 @@ dmypy.json
 
 # Kaggle Datasets
 kaggle/input/
+
+# Model Saves
+models/

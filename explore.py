@@ -58,11 +58,14 @@ print("splitting data")
 #split out test and train subsets:
 X_train, X_test, Y_train, Y_test = train_test_split(news_vector, movements, random_state=1)
 
-print("creating object")
-clf = MLPRegressor(solver='lbfgs', alpha=1e-5,hidden_layer_sizes=(1000,20), random_state=1,verbose=True, max_iter=40)
+for modelName in ["lbfgs", "sgd", "adam"]:
+    for nMax in range(1,20):
 
-print("starting regression")
-clf = clf.fit(X_train,Y_train)
+        print(f"Model {modelName}, Max Iterations {nMax*10}")
+        clf = MLPRegressor(solver=modelName, alpha=1e-5,hidden_layer_sizes=(1000,20), random_state=1,verbose=True, max_iter=nMax*10)
 
-pickle.dump(clf, open("model.pkl","wb"))
+        print("starting regression")
+        clf = clf.fit(X_train,Y_train)
+
+        pickle.dump(clf, open(f"models/{modelName} - {nMax}.pkl","wb"))
 
