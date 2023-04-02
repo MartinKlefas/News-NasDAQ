@@ -53,3 +53,12 @@ def getModifiedDate(folderName: str):
         
 
     return maxDate
+
+def reduce_stocks(df : pd.DataFrame, deviations : float):
+     # removes data that's more than 'deviations' standard deviations away from the mean - thereby removing single day massive crashes and rises 
+    move_mean = df["Average"].mean()
+    move_dev = df["Average"].std()
+
+    lbound = move_mean - deviations * move_dev
+    ubound = move_mean + deviations * move_dev
+    return df.drop(df[lbound < df.Average <= ubound].index)
