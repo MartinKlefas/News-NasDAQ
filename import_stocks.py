@@ -61,4 +61,7 @@ def reduce_stocks(df : pd.DataFrame, deviations : float):
 
     lbound = move_mean - deviations * move_dev
     ubound = move_mean + deviations * move_dev
-    return df.drop(df[lbound < df.Average <= ubound].index)
+    df = df.drop(df[df.Average < lbound ].index)
+    df = df.drop(df[df.Average > ubound].index)    
+
+    return df

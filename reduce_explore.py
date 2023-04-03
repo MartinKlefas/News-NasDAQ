@@ -18,17 +18,18 @@ from sklearn.metrics import mean_absolute_error
 import import_headlines, import_stocks
 
 print("Importing News")
-#if not os.path.isfile("kaggle/input/news.feather") or os.path.getmtime("kaggle/input/million-headlines/abcnews-date-text.csv") > os.path.getmtime("kaggle/input/news.feather"):
-news = import_headlines.get_headlines("kaggle/input/million-headlines/abcnews-date-text.csv")
-news = import_headlines.reduce_vocabulary(news, "headline_text")
-feather.write_feather(news,"kaggle/input/news.feather")
-#else:
-#    news = feather.read_feather("kaggle/input/news.feather")
+if not os.path.isfile("kaggle/input/news.feather") or os.path.getmtime("kaggle/input/million-headlines/abcnews-date-text.csv") > os.path.getmtime("kaggle/input/news.feather"):
+    news = import_headlines.get_headlines("kaggle/input/million-headlines/abcnews-date-text.csv")
+    news = import_headlines.reduce_vocabulary(news, "headline_text")
+    feather.write_feather(news,"kaggle/input/news.feather")
+else:
+    news = feather.read_feather("kaggle/input/news.feather")
 
 print("Importing Stocks")
 #if not os.path.isfile("kaggle/input/stocks.feather") or import_stocks.getModifiedDate("kaggle/input/nasdaq-daily-stock-prices/") > os.path.getmtime("kaggle/input/stocks.feather"):
 stockdata = import_stocks.do_folder("kaggle/input/nasdaq-daily-stock-prices/")
 stockdata = import_stocks.reduce_stocks(stockdata,5)
+feather.write_feather(stockdata,"kaggle/input/stocks.feather")
 
 #else:
 #    stockdata = feather.read_feather("kaggle/input/stocks.feather")
