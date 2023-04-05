@@ -8,7 +8,7 @@ In this project I will be using two of the more popular Kaggle datasets, and com
 - [NASDAQ daily stock prices](https://www.kaggle.com/datasets/svaningelgem/nasdaq-daily-stock-prices)
 	- OHLC prices between 1970-01-02 till 2023-03-29.
 
-The goal of the perceptron will be to predict based on the day's headlines how the stock market will move.
+The goal of the perceptron will be to predict how the stock market will move based on the day's headlines.
 
 The approach is as follows:
 # Part 1
@@ -34,5 +34,15 @@ With this done, the model training iterations were rerun in [reduce_explore.py](
 The predictions made here were marginally better than throwing darts at a set of random targets, but only just. At this point we'll try two last options:
 - sentiment analysis on the original headlines to try to gauge if "worse" vs "good" days have a noticeable effect on the stock markets.
 - time-shifting the headlines - as presumably people can buy and sell stocks faster than they can write news stories for publication.
+
+Analysis of the resulting data is provided in [Sentiment's effect on regression](Inspecting-Sentiment.ipynb) & [Time stamp manipulation](Inspecting-time.ipynb)
+
+# Conclusion
+Unfortunately it seems that these two datasets aren't connected in a meaningful sense. There are a number of things that could be behind this:
+- Poor modelling choices. Assumptions & guesses were made, and there's also limited computing power. 
+- Too many irrelevant stories - local burglaries have no effect on global markets, but global wars should do.
+- Missing key time-based information
+- Investors only look at hyper-specific information to make choices
+- Headlines and stocks are just completely separate with no causal relationships
 
 > Written with [StackEdit](https://stackedit.io/).
