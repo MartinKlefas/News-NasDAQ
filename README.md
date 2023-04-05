@@ -24,10 +24,15 @@ The lessons learned in the notebook are then implemented in code, with a number 
 	- To save the most possible time we're using 'feather' [as shown in this test](https://towardsdatascience.com/the-best-format-to-save-pandas-data-414dca023e0d)
 
 # Part 3
-The models were analysed on [this notebook](Inspecting-modeks.ipynb), and unfortunately were unable to fit the data. Data cleaning was then implemented on the two input datasets to remove:
-- Massive daily movements - thes are potentially skewing the model, and may not be reflected using particularly unique language in headlines. It may also be that some were extreme enough movements to skew all model steering efforts away from a measurable pattern.
+The models were analysed on [this notebook](Inspecting-models.ipynb), and unfortunately were unable to fit the data. Data cleaning was then implemented on the two input datasets to remove:
+- Massive daily movements - these are potentially skewing the model, and may not be reflected using particularly unique language in headlines. It may also be that some were extreme enough movements to skew all model steering efforts away from a measurable pattern.
 - Words that only appeared less than 3 times in the headlines dataset, as these are incredibly unlikely to have been the drivers of global stock change - otherwise surely they'd appear in the headlines the next day too "x causes global stock drop" etc. These were simply bloating the vocabulary in the model and potentially masking true inputs.
 
-With this done, a new model inspection notebook was created.
+With this done, the model training iterations were rerun in [reduce_explore.py](reduce_explore.py), and [a new model inspection notebook](Inspecting-reduced-models.ipynb) was created.
+
+# Part 4
+The predictions made here were marginally better than throwing darts at a set of random targets, but only just. At this point we'll try two last options:
+- sentiment analysis on the original headlines to try to gauge if "worse" vs "good" days have a noticeable effect on the stock markets.
+- time-shifting the headlines - as presumably people can buy and sell stocks faster than they can write news stories for publication.
 
 > Written with [StackEdit](https://stackedit.io/).
