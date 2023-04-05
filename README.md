@@ -38,7 +38,7 @@ The predictions made here were marginally better than throwing darts at a set of
 Analysis of the resulting data is provided in [Sentiment's effect on regression](Inspecting-Sentiment.ipynb) & [Time stamp manipulation](Inspecting-time.ipynb)
 
 # Conclusion
-Unfortunately it seems that these two datasets aren't connected in a meaningful sense. There are a number of things that could be behind this:
+Unfortunately it seems that these two datasets might not be connected in a meaningful sense. There are a number of things that could be behind this:
 - Poor modelling choices. Assumptions & guesses were made, and there's also limited computing power. 
 - Too many irrelevant stories - local burglaries have no effect on global markets, but global wars should do.
 - Missing key time-based information
